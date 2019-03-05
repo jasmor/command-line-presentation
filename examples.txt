@@ -1,5 +1,11 @@
 # I've pasted the code here so you can copy/paste into the terminal
 
+#Download the data (warning, it's about 4Gb to download)
+
+curl -O https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_us_Digital_Ebook_Purchase_v1_00.tsv.gz && curl -O https://s3.amazonaws.com/amazon-reviews-pds/tsv/amazon_reviews_us_Digital_Ebook_Purchase_v1_01.tsv.gz
+
+
+
 #jq section
 
 curl 'https://api.github.com/repos/stedolan/jq/commits?per_page=5'
