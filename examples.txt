@@ -8,5 +8,35 @@ curl 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | jq '.[0]'
 
 curl 'https://api.github.com/repos/stedolan/jq/commits?per_page=5' | jq '.[0] | {message: .commit.message, name: .commit.committer.name}'
 
+# Amazon reviews ("large dataset") section
+
+file amazon_reviews_us_Digital_Ebook_Purchase_v1_0*
+
+head -n1 reviews.tsv
+
+time wc  -w reviews.tsv
+
+cut -d$'\t' -f 6,8,13,14 reviews.tsv | more
+
+cut -d$'\t' -f 6,8,13,14 reviews.tsv > stripped_reviews.tsv
+
+cat stripped_reviews.tsv | tr "\\t" "," >  all_reviews.csv
+
+cat all_reviews.csv | awk -F ","  '{print $4}' | grep -i Packt
+
+time cat reviews.tsv | parallel  --pipe --block 20M wc -w | awk '{s+=$1} END {print s}'
+
+# sort section
+
+zcat amazon_reviews_us_Digital_Ebook_Purchase_v1_01.tsv.gz | head -n 10 | cut -f13 | sort
+
+zcat amazon_reviews_us_Digital_Ebook_Purchase_v1_01.tsv.gz | head -n 10 | tail -n +2 | cut -f13,8 | sort -n
+
+zcat amazon_reviews_us_Digital_Ebook_Purchase_v1_01.tsv.gz | head -n 50000 | tail -n +2 | sort -t$'\t' -k9n,9  | tail -n 1
+
+zcat amazon_reviews_us_Digital_Ebook_Purchase_v1_01.tsv.gz | head -n 50000 | tail -n +2 | cut -f8 | sort | uniq
+
+
+
 
 
